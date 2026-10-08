@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Date With Me 💗</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: #654b4b;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.9) 0 5%, transparent 6%),
+        radial-gradient(circle at 85% 15%, rgba(255,255,255,.65) 0 4%, transparent 5%),
+        linear-gradient(135deg, #ffdce4, #fff4e9);
+    overflow-x: hidden;
+}
+
+/* 背景愛心 */
+.heart {
+    position: fixed;
+    bottom: -40px;
+    color: rgba(225, 111, 132, .25);
+    font-size: 28px;
+    animation: floatHeart linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes floatHeart {
+    from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    20% { opacity: 1; }
+    to {
+        transform: translateY(-115vh) rotate(30deg);
+        opacity: 0;
+    }
+}
+
+.app {
+    position: relative;
+    z-index: 2;
+    width: min(920px, 92%);
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 45px 0;
+}
+
+.card {
+    width: 100%;
+    background: rgba(255, 252, 247, .95);
+    border: 3px solid rgba(237, 157, 171, .45);
+    border-radius: 42px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 22px 55px rgba(173, 90, 105, .18);
+    position: relative;
+}
+
+.page {
+    display: none;
+    animation: appear .45s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    margin: 10px 0 12px;
+    font-size: clamp(30px, 5vw, 52px);
+    color: #6b4a46;
+}
+
+h2 {
+    font-size: clamp(26px, 4vw, 40px);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #a27a78;
+    margin-bottom: 28px;
+}
+
+/* 狗狗 */
+.dog-avatar {
+    width: 180px;
+    height: 180px;
+    margin: -120px auto 10px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f5c383, #d99055);
+    border: 8px solid #fff8ef;
+    box-shadow: 0 12px 30px rgba(140, 85, 70, .22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 105px;
+    position: relative;
+}
+
+.dog-avatar::after {
+    content: "♡";
+    position: absolute;
+    right: -22px;
+    top: 2px;
+    color: #e4778c;
+    font-size: 48px;
+    transform: rotate(15deg);
+}
+
+.thought {
+    position: absolute;
+    right: 10%;
+    top: -48px;
+    font-size: 62px;
+    filter: drop-shadow(0 5px 7px rgba(0,0,0,.08));
+}
+
+/* 按鈕 */
+.btn {
+    border: 0;
+    border-radius: 999px;
+    padding: 15px 28px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s ease;
+    margin: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.primary {
+    background: linear-gradient(135deg, #ed8fa1, #df7188);
+    color: white;
+    box-shadow: 0 8px 18px rgba(219, 103, 127, .28);
+}
+
+.secondary {
+    background: #fff;
+    color: #c26e7d;
+    border: 2px solid #edabb7;
+}
+
+.button-area {
+    min-height: 95px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#noBtn {
+    position: relative;
+}
+
+/* 日期 */
+input[type="date"],
+.other-input {
+    width: min(420px, 90%);
+    padding: 16px 18px;
+    border: 2px solid #efb1bd;
+    background: white;
+    border-radius: 18px;
+    font-size: 17px;
+    color: #654b4b;
+    outline: none;
+    margin: 15px 0;
+}
+
+input:focus {
+    border-color: #df7188;
+    box-shadow: 0 0 0 4px rgba(223,113,136,.12);
+}
+
+/* 選項 */
+.options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 15px;
+    margin: 28px 0;
+}
+
+.option {
+    background: #fff;
+    border: 2px solid #f0c3ca;
+    border-radius: 22px;
+    padding: 20px 12px;
+    cursor: pointer;
+    transition: .2s ease;
+    min-height: 115px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.option:hover {
+    transform: translateY(-5px);
+    border-color: #e48698;
+    box-shadow: 0 10px 22px rgba(197, 113, 130, .13);
+}
+
+.option.selected {
+    background: #ffe1e7;
+    border-color: #df7188;
+    box-shadow: 0 8px 20px rgba(211, 103, 125, .18);
+}
+
+.emoji {
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+.option span:last-child {
+    font-weight: bold;
+}
+
+/* 自製白色立體思考泡泡 */
+.thought-icon {
+    position: relative;
+    width: 54px;
+    height: 39px;
+    margin: 2px auto 13px;
+    background: white;
+    border-radius: 50%;
+    box-shadow:
+        -13px 4px 0 -2px white,
+        13px 3px 0 -3px white,
+        -4px -10px 0 -4px white,
+        8px -8px 0 -5px white,
+        0 6px 12px rgba(110,110,110,.2);
+}
+
+.thought-icon::before {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    background: white;
+    border-radius: 50%;
+    left: -7px;
+    bottom: -14px;
+    box-shadow: 0 3px 5px rgba(0,0,0,.12);
+}
+
+.thought-icon::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    left: -16px;
+    bottom: -23px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.12);
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    min-height: 24px;
+    color: #d35f77;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* 最後結果 */
+.plan {
+    width: min(560px, 100%);
+    margin: 25px auto;
+    text-align: left;
+    background: #fff;
+    border: 2px dashed #e99aaa;
+    border-radius: 28px;
+    padding: 25px 30px;
+    line-height: 2;
+    font-size: 18px;
+}
+
+.final-heart {
+    font-size: 55px;
+    animation: beat 1.2s infinite;
+}
+
+@keyframes beat {
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+.progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #efd3d8;
+}
+
+.dot.on {
+    background: #df7188;
+}
+
+.small {
+    color: #aa8583;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 35px 18px;
+        border-radius: 30px;
+    }
+
+    .dog-avatar {
+        width: 140px;
+        height: 140px;
+        font-size: 80px;
+        margin-top: -100px;
+    }
+
+    .thought {
+        font-size: 48px;
+        right: 3%;
+    }
+
+    .options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<div class="app">
+<div class="card">
+
+    <!-- 1 Invitation -->
+    <section class="page active" id="page1">
+
+        <div class="thought">☁️</div>
+
+        <div class="dog-avatar">🐶</div>
+
+        <div class="small">♡ DATE WITH ME ♡</div>
+
+        <h1>Would you like to go<br>on a date with me? 💗</h1>
+
+        <p class="subtitle">
+            I promise it'll be cute.
+        </p>
+
+        <div class="button-area" id="buttonArea">
+            <button class="btn primary" onclick="goPage(2)">
+                Yes 💕
+            </button>
+
+            <button class="btn secondary" id="noBtn">
+                No!
+            </button>
+        </div>
+
+    </section>
+
+    <!-- 2 Date -->
+    <section class="page" id="page2">
+
+        <div class="progress">
+            <div class="dot on"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="emoji">📅</div>
+
+        <h2>When are you free? 💕</h2>
+
+        <p class="subtitle">
+            Pick the perfect day for our date.
+        </p>
+
+        <input type="date" id="dateInput">
+
+        <div class="message" id="dateMessage"></div>
+
+        <br>
+
+        <button class="btn primary" onclick="saveDate()">
+            Next 💗
+        </button>
+
+    </section>
+
+    <!-- 3 Food -->
+    <section class="page" id="page3">
+
+        <div class="progress">
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="emoji">🍴</div>
+
+        <h2>What would you like to eat?</h2>
+
+        <p class="subtitle">
+            Choose something delicious!
+        </p>
+
+        <div class="options" id="foodOptions">
+
+            <div class="option" onclick="selectOption(this,'food','Pizza')">
+                <span class="emoji">🍕</span>
+                <span>Pizza</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Sushi')">
+                <span class="emoji">🍣</span>
+                <span>Sushi</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Burgers')">
+                <span class="emoji">🍔</span>
+                <span>Burgers</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Pasta')">
+                <span class="emoji">🍝</span>
+                <span>Pasta</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Tacos')">
+                <span class="emoji">🌮</span>
+                <span>Tacos</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Ramen')">
+                <span class="emoji">🍜</span>
+                <span>Ramen</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Hot Pot')">
+                <span class="emoji">🍲</span>
+                <span>Hot Pot</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Steak')">
+                <span class="emoji">🥩</span>
+                <span>Steak</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Brunch')">
+                <span class="emoji">🥞</span>
+                <span>Brunch</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'food','Other')">
+                <div class="thought-icon"></div>
+                <span>Other</span>
+            </div>
+
+        </div>
+
+        <div id="foodOther" class="hidden">
+            <input
+                class="other-input"
+                id="foodOtherInput"
+                placeholder="What do you want to eat?"
+            >
+        </div>
+
+        <div class="message" id="foodMessage"></div>
+
+        <button class="btn primary" onclick="saveFood()">
+            Next 💗
+        </button>
+
+    </section>
+
+    <!-- 4 Activity -->
+    <section class="page" id="page4">
+
+        <div class="progress">
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="emoji">🎡</div>
+
+        <h2>What should we do? 💕</h2>
+
+        <p class="subtitle">
+            Pick our date activity.
+        </p>
+
+        <div class="options" id="activityOptions">
+
+            <div class="option" onclick="selectOption(this,'activity','Movie')">
+                <span class="emoji">🎬</span>
+                <span>Movie</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Shopping')">
+                <span class="emoji">🛍️</span>
+                <span>Shopping</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Café')">
+                <span class="emoji">☕</span>
+                <span>Café</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Exhibition')">
+                <span class="emoji">🎨</span>
+                <span>Exhibition</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Karaoke')">
+                <span class="emoji">🎤</span>
+                <span>Karaoke</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Night Walk')">
+                <span class="emoji">🌙</span>
+                <span>Night Walk</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Bowling')">
+                <span class="emoji">🎳</span>
+                <span>Bowling</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Amusement Park')">
+                <span class="emoji">🎡</span>
+                <span>Amusement Park</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Picnic')">
+                <span class="emoji">🧺</span>
+                <span>Picnic</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'activity','Other')">
+                <div class="thought-icon"></div>
+                <span>Other</span>
+            </div>
+
+        </div>
+
+        <div id="activityOther" class="hidden">
+            <input
+                class="other-input"
+                id="activityOtherInput"
+                placeholder="What would you like to do?"
+            >
+        </div>
+
+        <div class="message" id="activityMessage"></div>
+
+        <button class="btn primary" onclick="saveActivity()">
+            Next 💗
+        </button>
+
+    </section>
+
+    <!-- 5 Dress Code -->
+    <section class="page" id="page5">
+
+        <div class="progress">
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+            <div class="dot on"></div>
+        </div>
+
+        <div class="emoji">👗</div>
+
+        <h2>What should we wear? ✨</h2>
+
+        <p class="subtitle">
+            Choose our dress code.
+        </p>
+
+        <div class="options" id="dressOptions">
+
+            <div class="option" onclick="selectOption(this,'dress','Casual')">
+                <span class="emoji">👕</span>
+                <span>Casual</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'dress','Cute')">
+                <span class="emoji">🎀</span>
+                <span>Cute</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'dress','Smart Casual')">
+                <span class="emoji">✨</span>
+                <span>Smart Casual</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'dress','Formal')">
+                <span class="emoji">👗</span>
+                <span>Formal</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'dress','All Black')">
+                <span class="emoji">🖤</span>
+                <span>All Black</span>
+            </div>
+
+            <div class="option" onclick="selectOption(this,'dress','Anything You Like')">
+                <span class="emoji">🤍</span>
+                <span>Anything You Like</span>
+            </div>
+
+        </div>
+
+        <div class="message" id="dressMessage"></div>
+
+        <button class="btn primary" onclick="finishPlan()">
+            Create Our Date Plan 💌
+        </button>
+
+    </section>
+
+    <!-- 6 Result -->
+    <section class="page" id="page6">
+
+        <div class="final-heart">💗</div>
+
+        <h1>Our Date Plan</h1>
+
+        <p class="subtitle">
+            It's a date! See you there 💕
+        </p>
+
+        <div class="plan">
+            <div>📅 <strong>Date:</strong> <span id="resultDate"></span></div>
+            <div>🍴 <strong>Food:</strong> <span id="resultFood"></span></div>
+            <div>🎡 <strong>Activity:</strong> <span id="resultActivity"></span></div>
+            <div>👗 <strong>Dress Code:</strong> <span id="resultDress"></span></div>
+        </div>
+
+        <button class="btn secondary" onclick="restart()">
+            🔄 Plan Again
+        </button>
+
+        <button class="btn primary" onclick="copyPlan()">
+            💌 Copy Date Plan
+        </button>
+
+        <div class="message" id="copyMessage"></div>
+
+    </section>
+
+</div>
+</div>
+
+<script>
+
+const plan = {
+    date: "",
+    food: "",
+    activity: "",
+    dress: ""
+};
+
+/* 切換頁面 */
+function goPage(number) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById("page" + number).classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* No 按鈕逃跑 */
+const noBtn = document.getElementById("noBtn");
+const buttonArea = document.getElementById("buttonArea");
+
+function runAway() {
+
+    const areaWidth = buttonArea.clientWidth;
+    const areaHeight = buttonArea.clientHeight;
+
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+
+    const maxX = Math.max(0, areaWidth - btnWidth);
+    const maxY = Math.max(0, areaHeight - btnHeight);
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseenter", runAway);
+noBtn.addEventListener("mouseover", runAway);
+
+noBtn.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+    runAway();
+});
+
+/* 日期 */
+function saveDate() {
+
+    const date = document.getElementById("dateInput").value;
+    const message = document.getElementById("dateMessage");
+
+    if (!date) {
+        message.textContent = "Please pick a date first 💗";
+        return;
+    }
+
+    plan.date = date;
+    message.textContent = "";
+
+    goPage(3);
+}
+
+/* 選擇 Food / Activity / Dress */
+function selectOption(element, type, value) {
+
+    let container;
+
+    if (type === "food") {
+        container = document.getElementById("foodOptions");
+    }
+
+    if (type === "activity") {
+        container = document.getElementById("activityOptions");
+    }
+
+    if (type === "dress") {
+        container = document.getElementById("dressOptions");
+    }
+
+    container.querySelectorAll(".option").forEach(item => {
+        item.classList.remove("selected");
+    });
+
+    element.classList.add("selected");
+
+    plan[type] = value;
+
+    if (type === "food") {
+
+        const other = document.getElementById("foodOther");
+
+        if (value === "Other") {
+            other.classList.remove("hidden");
+        } else {
+            other.classList.add("hidden");
+        }
+    }
+
+    if (type === "activity") {
+
+        const other = document.getElementById("activityOther");
+
+        if (value === "Other") {
+            other.classList.remove("hidden");
+        } else {
+            other.classList.add("hidden");
+        }
+    }
+}
+
+/* 儲存 Food */
+function saveFood() {
+
+    const message = document.getElementById("foodMessage");
+
+    if (!plan.food) {
+        message.textContent = "Please choose something to eat 💗";
+        return;
+    }
+
+    if (plan.food === "Other") {
+
+        const customFood =
+            document.getElementById("foodOtherInput").value.trim();
+
+        if (!customFood) {
+            message.textContent = "Tell me what you want to eat 🤍";
+            return;
+        }
+
+        plan.food = customFood;
+    }
+
+    message.textContent = "";
+
+    goPage(4);
+}
+
+/* 儲存 Activity */
+function saveActivity() {
+
+    const message =
+        document.getElementById("activityMessage");
+
+    if (!plan.activity) {
+        message.textContent = "Please choose an activity 💗";
+        return;
+    }
+
+    if (plan.activity === "Other") {
+
+        const customActivity =
+            document.getElementById("activityOtherInput").value.trim();
+
+        if (!customActivity) {
+            message.textContent =
+                "Tell me what you would like to do 🤍";
+            return;
+        }
+
+        plan.activity = customActivity;
+    }
+
+    message.textContent = "";
+
+    goPage(5);
+}
+
+/* 完成 */
+function finishPlan() {
+
+    const message =
+        document.getElementById("dressMessage");
+
+    if (!plan.dress) {
+        message.textContent =
+            "Please choose a dress code 💗";
+        return;
+    }
+
+    message.textContent = "";
+
+    const dateObject =
+        new Date(plan.date + "T00:00:00");
+
+    const prettyDate =
+        dateObject.toLocaleDateString(
+            "en-US",
+            {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            }
+        );
+
+    document.getElementById("resultDate").textContent =
+        prettyDate;
+
+    document.getElementById("resultFood").textContent =
+        plan.food;
+
+    document.getElementById("resultActivity").textContent =
+        plan.activity;
+
+    document.getElementById("resultDress").textContent =
+        plan.dress;
+
+    goPage(6);
+}
+
+/* 複製約會計畫 */
+async function copyPlan() {
+
+    const date =
+        document.getElementById("resultDate").textContent;
+
+    const text =
+`💗 OUR DATE PLAN 💗
+
+📅 Date: ${date}
+🍴 Food: ${plan.food}
+🎡 Activity: ${plan.activity}
+👗 Dress Code: ${plan.dress}
+
+It's a date! See you there 💕`;
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+        document.getElementById("copyMessage").textContent =
+            "Copied! Send it to your date 💕";
+
+    } catch {
+
+        document.getElementById("copyMessage").textContent =
+            "Your date plan is ready 💗";
+    }
+}
+
+/* 重新規劃 */
+function restart() {
+
+    plan.date = "";
+    plan.food = "";
+    plan.activity = "";
+    plan.dress = "";
+
+    document.getElementById("dateInput").value = "";
+    document.getElementById("foodOtherInput").value = "";
+    document.getElementById("activityOtherInput").value = "";
+
+    document.querySelectorAll(".option").forEach(item => {
+        item.classList.remove("selected");
+    });
+
+    document.getElementById("foodOther").classList.add("hidden");
+    document.getElementById("activityOther").classList.add("hidden");
+
+    document.querySelectorAll(".message").forEach(item => {
+        item.textContent = "";
+    });
+
+    noBtn.style.position = "relative";
+    noBtn.style.left = "auto";
+    noBtn.style.top = "auto";
+
+    goPage(1);
+}
+
+/* 背景漂浮愛心 */
+function createHearts() {
+
+    const heartContainer =
+        document.getElementById("hearts");
+
+    for (let i = 0; i < 18; i++) {
+
+        const heart =
+            document.createElement("div");
+
+        heart.className = "heart";
+        heart.textContent = "♡";
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        heart.style.animationDuration =
+            (8 + Math.random() * 10) + "s";
+
+        heart.style.animationDelay =
+            (Math.random() * 10) + "s";
+
+        heart.style.fontSize =
+            (18 + Math.random() * 35) + "px";
+
+        heartContainer.appendChild(heart);
+    }
+}
+
+createHearts();
+
+</script>
+
+</body>
+</html>
