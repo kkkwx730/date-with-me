@@ -602,6 +602,78 @@ select:focus,
     }
 }
 
+
+
+/* ===== Enhanced envelope-style final invitation ===== */
+#page8 { padding-top: 72px; }
+#page8::before {
+    content: "";
+    position: absolute;
+}
+.invitation-card {
+    width: min(700px, 100%);
+    padding: 82px 48px 34px;
+    border-radius: 34px;
+    background: linear-gradient(145deg,#fffdf8,#fff7f5);
+    border: 2px solid #f6bdc8;
+    overflow: visible;
+}
+.invitation-card::before {
+    content: "";
+    position: absolute;
+    inset: -42px -34px 46%;
+    z-index: -1;
+    border-radius: 34px 34px 12px 12px;
+    background: linear-gradient(145deg,#ffd2dc,#fff1e9);
+    border: 2px solid rgba(246,189,200,.72);
+    transform: skewY(-3deg);
+}
+.invite-dog {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 50%;
+    top: -82px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    padding: 7px;
+    background: #fffaf4;
+    border: 5px solid #f6a8b8;
+    box-shadow: 0 10px 28px rgba(197,91,116,.22);
+    z-index: 3;
+}
+.invite-dog img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+.invite-bow { font-size: 50px; line-height: 1; margin-top: -4px; filter: drop-shadow(0 4px 4px rgba(199,90,116,.18)); }
+.invite-top h1 { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 46px; }
+.invite-message { font-size: 16px; }
+.invite-details { grid-template-columns: 1fr; gap: 9px; }
+.invite-row { min-height: 64px; border-radius: 22px; padding: 10px 18px; }
+.invite-icon { width: 45px; height: 45px; font-size: 24px; }
+.invite-text { width: 100%; display:grid; grid-template-columns: 150px 1fr; align-items:center; text-align:left; }
+.invite-label { font-size: 13px; color:#7a5651; letter-spacing:.3px; }
+.invite-value { font-size: 16px; font-style: italic; }
+.invite-memory {
+    margin: 20px auto 4px;
+    width: min(520px,95%);
+    padding: 15px 20px;
+    border: 2px dashed #f4c3cc;
+    border-radius: 24px;
+    color: #c8657d;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 18px;
+    background: rgba(255,244,246,.72);
+}
+.download-btn { min-width: 190px; }
+@media(max-width:600px){
+    #page8 { padding-top: 62px; }
+    .invitation-card { padding: 72px 18px 25px; }
+    .invite-dog { width:130px; height:130px; top:-70px; }
+    .invite-top h1 { font-size: 38px; }
+    .invite-text { grid-template-columns: 112px 1fr; }
+    .invite-value { font-size: 14px; }
+}
+
 </style>
     
 </head>
@@ -1070,14 +1142,16 @@ select:focus,
 
     <div class="invitation-card">
 
+        <div class="invite-dog"><img src="samoyed.png.png" alt="Cute Samoyed"></div>
+
         <div class="invite-top">
-            <div class="invite-envelope">💌</div>
+            <div class="invite-bow">🎀</div>
             <div class="invite-small">YOU'RE INVITED</div>
 
-            <h1>Our Date</h1>
+            <h1>Our Date Plan ♡</h1>
 
             <p class="invite-message">
-                A little date planned just for us ♡
+                ♡ A special day, just for us ♡
             </p>
         </div>
 
@@ -1137,6 +1211,8 @@ select:focus,
 
         </div>
 
+        <div class="invite-memory">Can’t wait to make more happy memories with you ♥</div>
+
         <div class="invite-bottom">
             <div class="invite-love">See you on our date! ♡</div>
             <div class="invite-sign">with love 💗</div>
@@ -1152,6 +1228,10 @@ select:focus,
 
         <button class="btn primary" onclick="copyPlan()">
             💌 Copy Date Plan
+        </button>
+
+        <button class="btn primary download-btn" onclick="downloadInvitation()">
+            💌 Download Invitation
         </button>
 
     </div>
@@ -1555,6 +1635,74 @@ It's a date! See you there 💕`;
             .textContent =
             "Your date plan is ready 💗";
     }
+}
+
+
+/* Download invitation as PNG */
+function downloadInvitation() {
+    const canvas = document.createElement("canvas");
+    const scale = 2;
+    const W = 760, H = 980;
+    canvas.width = W * scale;
+    canvas.height = H * scale;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(scale, scale);
+
+    const roundRect = (x,y,w,h,r,fill,stroke) => {
+        ctx.beginPath();
+        ctx.roundRect(x,y,w,h,r);
+        if(fill){ ctx.fillStyle=fill; ctx.fill(); }
+        if(stroke){ ctx.strokeStyle=stroke; ctx.lineWidth=2; ctx.stroke(); }
+    };
+    const text = (t,x,y,size,weight="normal",align="left",color="#654b4b",font="Arial") => {
+        ctx.fillStyle=color; ctx.font=`${weight} ${size}px ${font}`; ctx.textAlign=align; ctx.textBaseline="middle"; ctx.fillText(t,x,y);
+    };
+
+    const bg=ctx.createLinearGradient(0,0,W,H); bg.addColorStop(0,"#ffd6df"); bg.addColorStop(1,"#fff1e8"); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    for(let i=0;i<18;i++){ ctx.globalAlpha=.18; text("♡",35+(i*97)%700,40+(i*137)%900,26+(i%3)*8,"normal","center","#e56f89"); } ctx.globalAlpha=1;
+
+    // envelope behind the card
+    roundRect(42,118,676,790,38,"#ffd8df","#f2b5c1");
+    ctx.beginPath(); ctx.moveTo(42,190); ctx.lineTo(380,430); ctx.lineTo(718,190); ctx.lineTo(718,875); ctx.lineTo(42,875); ctx.closePath(); ctx.fillStyle="#ffe8e7"; ctx.fill();
+    roundRect(80,150,600,745,34,"#fffaf6","#f3b8c4");
+
+    // dog circle
+    ctx.save(); ctx.beginPath(); ctx.arc(380,138,78,0,Math.PI*2); ctx.fillStyle="#fff8f1"; ctx.fill(); ctx.lineWidth=7; ctx.strokeStyle="#f29aae"; ctx.stroke(); ctx.clip();
+    const dog=document.querySelector(".invite-dog img") || document.querySelector(".dog-avatar img");
+    if(dog && dog.complete && dog.naturalWidth){
+        const iw=dog.naturalWidth, ih=dog.naturalHeight, side=Math.min(iw,ih), sx=(iw-side)/2, sy=(ih-side)/2;
+        ctx.drawImage(dog,sx,sy,side,side,302,60,156,156);
+    } else { text("🐶",380,138,70,"normal","center"); }
+    ctx.restore();
+    text("🎀",380,214,44,"normal","center");
+    text("YOU'RE INVITED",380,260,12,"bold","center","#d77e95");
+    text("Our Date Plan ♡",380,304,42,"bold","center","#654b4b","Georgia");
+    text("♡  A special day, just for us  ♡",380,344,16,"normal","center","#b36f76","Georgia");
+
+    const rows=[
+      ["📅","DATE",plan.date], ["⏰","TIME",plan.time], ["🍴","FOOD",plan.food],
+      ["🎡","ACTIVITY",plan.activity], ["👗","DRESS CODE",plan.dress], ["💗","ONE MORE THING",plan.special]
+    ];
+    let y=390;
+    rows.forEach(([icon,label,value])=>{
+        roundRect(125,y,510,70,24,"#fff7f7","#f4c4cc");
+        ctx.beginPath(); ctx.arc(165,y+35,24,0,Math.PI*2); ctx.fillStyle="#ffecef"; ctx.fill();
+        text(icon,165,y+35,22,"normal","center");
+        text(label,205,y+35,14,"bold","left","#77514f");
+        text(value || "—",365,y+35,16,"normal","left","#654b4b","Georgia");
+        text("♡",606,y+35,20,"normal","center","#e8899c");
+        y+=78;
+    });
+    roundRect(155,866,450,70,24,"#fff1f3","#f3c2cb");
+    text("Can’t wait to make more happy memories with you ♥",380,891,17,"normal","center","#c8657d","Georgia");
+    text("with love 💗",380,921,14,"normal","center","#d98ca0","Georgia");
+
+    const link=document.createElement("a");
+    link.download="our-date-invitation.png";
+    link.href=canvas.toDataURL("image/png");
+    link.click();
+    const msg=document.getElementById("copyMessage");
+    if(msg) msg.textContent="Invitation downloaded 💌";
 }
 
 /* Restart */
