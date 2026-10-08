@@ -281,80 +281,18 @@ select:focus,
 
 /* White thought bubble */
 
-/* Cute blue-white fluffy thought bubble */
+/* Thought bubble image */
 
-.thought-icon {
-    position: relative;
-    width: 74px;
-    height: 44px;
-    margin: 12px auto 20px;
-
-    background: linear-gradient(
-        145deg,
-        #ffffff 20%,
-        #eefaff 55%,
-        #bfeaff 100%
-    );
-
-    border: 2px solid #9edfff;
-    border-radius: 50%;
-
-    box-shadow:
-        0 6px 12px rgba(100, 190, 230, 0.25),
-        inset 5px 5px 8px rgba(255,255,255,0.95);
+.thought-bubble-img {
+    width: 75px;
+    height: 60px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 8px;
+    transition: transform .2s ease;
 }
 
-/* 上方蓬鬆雲朵 */
-.thought-icon::before {
-    content: "";
-    position: absolute;
-
-    width: 35px;
-    height: 35px;
-
-    left: 8px;
-    top: -18px;
-
-    background: linear-gradient(
-        145deg,
-        #ffffff 20%,
-        #edfaff 60%,
-        #c5edff 100%
-    );
-
-    border: 2px solid #9edfff;
-    border-radius: 50%;
-
-    box-shadow:
-        27px 5px 0 -2px #d9f4ff,
-        13px -5px 0 -3px #f8fdff;
-}
-
-/* 小思考泡泡 */
-.thought-icon::after {
-    content: "";
-    position: absolute;
-
-    width: 12px;
-    height: 12px;
-
-    left: -5px;
-    bottom: -17px;
-
-    background: linear-gradient(
-        145deg,
-        #ffffff,
-        #bdeaff
-    );
-
-    border: 1.5px solid #8ed7fa;
-    border-radius: 50%;
-
-    box-shadow:
-        -11px 12px 0 -3px #d8f4ff;
-}
-
-.option:hover .thought-icon {
+.option:hover .thought-bubble-img {
     transform: scale(1.08);
 }
 .hidden {
@@ -565,10 +503,7 @@ select:focus,
             <span>7:00 PM</span>
         </div>
 
-        <div class="option" onclick="selectOption(this,'time','Other')">
-            <div class="thought-icon"></div>
-            <span>Other</span>
-        </div>
+        <img src="thought-bubble.png.png" class="thought-bubble-img" alt="Thought bubble">
 
     </div>
 
@@ -647,10 +582,9 @@ select:focus,
             <span>Brunch</span>
         </div>
 
-        <div class="option" onclick="selectOption(this,'food','Other')">
-            <div class="thought-icon"></div>
-            <span>Other</span>
-        </div>
+        <img src="thought-bubble.png.png" class="thought-bubble-img" alt="Thought bubble">
+
+        
 
     </div>
 
@@ -731,10 +665,7 @@ select:focus,
             <span>Picnic</span>
         </div>
 
-        <div class="option" onclick="selectOption(this,'activity','Other')">
-            <div class="thought-icon"></div>
-            <span>Other</span>
-        </div>
+        <img src="thought-bubble.png.png" class="thought-bubble-img" alt="Thought bubble">
 
     </div>
 
